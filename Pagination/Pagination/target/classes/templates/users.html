@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Paginated Users</title>
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination li {
+            display: inline;
+            margin: 0 5px;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            background-color: #f2f2f2;
+        }
+
+        .pagination a:hover {
+            background-color: #ddd;
+        }
+
+        .pagination .active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        h1{
+        display:flex
+        text:center
+        }
+    </style>
+</head>
+<body>
+
+<h1>Paginated Users</h1>
+
+<!-- Display Users Table -->
+<table border="1" width="50%" style="margin: 0 auto;">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.email}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Pagination Controls -->
+<div class="pagination">
+    <ul>
+        <!-- Previous Button -->
+        <li th:if="${currentPage > 0}">
+            <a th:href="@{/users(page=${currentPage - 1}, size=5)}">Previous</a>
+        </li>
+
+        <!-- Page Numbers (showing only 1-5) -->
+        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:if="${i < 5}">
+            <a th:href="@{/users(page=${i}, size=5)}"
+               th:classappend="${currentPage == i} ? 'active' : ''"
+               th:text="${i + 1}">1</a>
+        </li>
+
+        <!-- Next Button -->
+        <li th:if="${currentPage < totalPages - 1}">
+            <a th:href="@{/users(page=${currentPage + 1}, size=5)}">Next</a>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>
